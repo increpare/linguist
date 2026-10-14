@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: 6bd7b246df9b90f2e97d2eddca9aba59a6764d96
+          ref: c0f7257fcb31c3feacf4b67c485df156f93e918b
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
