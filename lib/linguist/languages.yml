@@ -6357,7 +6357,7 @@ PureScript:
   language_id: 302
 PuzzleScript:
   type: programming
-  color: "#f7e26b"
+  color: "#ae81ff"
   extensions:
   - ".txt"
   tm_scope: source.puzzlescript
