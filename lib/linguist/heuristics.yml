@@ -1094,6 +1094,13 @@ disambiguations:
     pattern: '^(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}(?:/(?:3[0-2]|[12]?[0-9]))?(?:[ \t]+[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?(?:\.[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?)*)+(?:[ \t]|$)'
   - language: Adblock Filter List
     pattern: '\A\[(?:[Aa]d[Bb]lock(?:[ \t][Pp]lus)?|u[Bb]lock(?:[ \t][Oo]rigin)?|[Aa]d[Gg]uard)(?:[ \t][0-9]+(?:\.[0-9]+)*)?(?:[ \t]?;[ \t]?(?:[Aa]d[Bb]lock(?:[ \t][Pp]lus)?|u[Bb]lock(?:[ \t][Oo]rigin)?|[Aa]d[Gg]uard)(?:[ \t][0-9]+(?:\.[0-9]+)*)?)*\]'
+  - language: PuzzleScript
+    and:
+    - pattern: '(?i)^[ \t]*objects[ \t]*(?:\([^\r\n]*\)[ \t]*)?\r?$'
+    - pattern: '(?i)^[ \t]*legend[ \t]*(?:\([^\r\n]*\)[ \t]*)?\r?$'
+    - pattern: '(?i)^[ \t]*collisionlayers[ \t]*(?:\([^\r\n]*\)[ \t]*)?\r?$'
+    - pattern: '(?i)^[ \t]*rules[ \t]*(?:\([^\r\n]*\)[ \t]*)?\r?$'
+    - pattern: '^[ \t]*[^ \t\r\n=()]+[ \t]*=[ \t]*[^ \t\r\n=()][^\r\n]*\r?$|\[[^\r\n]*\][ \t]*->[ \t]*\['
   - language: Text
 - extensions: ['.typ']
   rules:

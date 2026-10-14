@@ -6355,6 +6355,14 @@ PureScript:
   codemirror_mode: haskell
   codemirror_mime_type: text/x-haskell
   language_id: 302
+PuzzleScript:
+  type: programming
+  color: "#f7e26b"
+  extensions:
+  - ".txt"
+  tm_scope: source.puzzlescript
+  ace_mode: text
+  language_id: 616574523
 Pyret:
   type: programming
   color: "#ee1e10"

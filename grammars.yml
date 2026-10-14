@@ -1030,6 +1030,8 @@ vendor/grammars/praatvscode:
 - source.textgrid
 vendor/grammars/processing.tmbundle:
 - source.processing
+vendor/grammars/puzzlescript-tmLanguage:
+- source.puzzlescript
 vendor/grammars/python-django.tmbundle:
 - source.python.django
 - text.html.django
