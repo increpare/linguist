@@ -1,4 +1,4 @@
-name: Validate PuzzleScript fixture cleanup
+name: Validate simplified PuzzleScript heuristic
 on:
   push:
     branches: [puzzlescript-validation]
@@ -17,11 +17,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: 85d0df4d3a4f9feef9eced1ea6f45e33241c141b
+          ref: e465019b0880b6b3a377955583a1d607219085c1
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - uses: actions/setup-go@v6
+        if: matrix.ruby == '3.3'
+        with:
+          go-version: stable
+          cache: false
+      - uses: dtolnay/rust-toolchain@stable
+        if: matrix.ruby == '3.3'
+      - name: Check regex compatibility
+        if: matrix.ruby == '3.3'
+        run: script/check-regex-compatibility
       - name: Compile and generate samples
         run: bundle exec rake samples
       - name: Run all heuristic tests
