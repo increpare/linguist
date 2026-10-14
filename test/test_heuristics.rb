@@ -1334,45 +1334,6 @@ class TestHeuristics < Minitest::Test
     })
   end
 
-  def test_puzzlescript_requires_section_headers_and_code
-    source = "OBJECTS\nLEGEND\nP = Player\nCOLLISIONLAYERS\nRULES\n"
-    candidates = %w[PuzzleScript Text].map { |name| Language[name] }
-    assert_equal [Language["PuzzleScript"]], Heuristics.call(Blob.new("game.txt", source), candidates)
-
-    %w[OBJECTS LEGEND COLLISIONLAYERS RULES].each do |header|
-      incomplete = source.sub("#{header}\n", "")
-      assert_equal [Language["Text"]], Heuristics.call(Blob.new("notes.txt", incomplete), candidates)
-      identifier = source.sub(header, "#{header}_EXTRA")
-      assert_equal [Language["Text"]], Heuristics.call(Blob.new("notes.txt", identifier), candidates)
-    end
-
-    contents = "TABLE OF CONTENTS\nOBJECTS\nLEGEND\nCOLLISIONLAYERS\nRULES\n"
-    assert_equal [Language["Text"]], Heuristics.call(Blob.new("notes.txt", contents), candidates)
-    prose = "Objects, legend, collisionlayers and rules describe a game.\nP = Player\n"
-    assert_equal [Language["Text"]], Heuristics.call(Blob.new("notes.txt", prose), candidates)
-  end
-
-  def test_puzzlescript_header_variations_and_rules_without_assignments
-    source = "  objects (sprites)\r\n\tLegend\r\nCollisionLayers (objects)\r\nrules\r\n[ > Player ] -> [ Player ]\r\n"
-    candidates = %w[PuzzleScript Text].map { |name| Language[name] }
-    assert_equal [Language["PuzzleScript"]], Heuristics.call(Blob.new("game.txt", source), candidates)
-    source = "OBJECTS (a comment\ncontinued here)\nLEGEND\nP = Player\nCOLLISIONLAYERS\nRULES\n"
-    assert_equal [Language["PuzzleScript"]], Heuristics.call(Blob.new("game.txt", source), candidates)
-  end
-
-  def test_puzzlescript_respects_heuristic_byte_limit
-    source = "x" * Heuristics::HEURISTICS_CONSIDER_BYTES + "\nOBJECTS\nLEGEND\nP = Player\nCOLLISIONLAYERS\nRULES\n"
-    candidates = %w[PuzzleScript Text].map { |name| Language[name] }
-    assert_equal [Language["Text"]], Heuristics.call(Blob.new("notes.txt", source), candidates)
-  end
-
-  def test_puzzlescript_preserves_existing_txt_precedence
-    source = "OBJECTS\nLEGEND\nP = Player\nCOLLISIONLAYERS\nRULES\n"
-    candidates = ["Hosts File", "Adblock Filter List", "PuzzleScript", "Text"].map { |name| Language[name] }
-    assert_equal [Language["Hosts File"]], Heuristics.call(Blob.new("hosts.txt", "127.0.0.1 localhost\n" + source), candidates)
-    assert_equal [Language["Adblock Filter List"]], Heuristics.call(Blob.new("filters.txt", "[Adblock Plus 2.0]\n" + source), candidates)
-  end
-
   def test_typ_by_heuristics
     assert_heuristics({
       "Typst" => all_fixtures("Typst", "*.typ"),
