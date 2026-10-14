@@ -1,0 +1,52 @@
+name: Prepare and validate PuzzleScript
+on:
+  push:
+    branches: [puzzlescript-validation]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable
+          cache: false
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Fetch upstream fixtures and grammars
+        run: |
+          git fetch https://github.com/github-linguist/linguist.git main:refs/remotes/upstream/main v2.0.0:refs/tags/v2.0.0 test/attributes:refs/heads/test/attributes test/master:refs/heads/test/master
+          git branch -f main refs/remotes/upstream/main
+          git submodule init
+          git submodule sync --quiet
+          script/fast-submodule-update
+      - name: Generate language ID and import grammar
+        run: |
+          script/update-ids
+          script/add-grammar https://github.com/increpare/puzzlescript-tmLanguage
+          git add .gitmodules grammars.yml lib/linguist/languages.yml vendor/README.md vendor/licenses vendor/grammars/puzzlescript-tmLanguage
+          git diff --binary HEAD > /tmp/puzzlescript-generated.patch
+          git diff --check HEAD
+      - name: Check regex compatibility
+        run: script/check-regex-compatibility
+      - name: Run upstream tests
+        run: bundle exec rake
+      - name: Check grammar licenses
+        run: bundle exec licensed status -c vendor/licenses/config.yml
+      - name: Classifier cross-validation
+        run: bundle exec script/cross-validation --test
+      - name: Save generated change
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: puzzlescript-generated
+          path: /tmp/puzzlescript-generated.patch
+          if-no-files-found: warn
