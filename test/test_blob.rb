@@ -278,7 +278,7 @@ class TestBlob < Minitest::Test
   end
 
   def test_puzzlescript_txt
-    %w[constellationz kettle dreizack].each do |name|
+    %w[constellationz north-wind-sailboat dreizack].each do |name|
       assert_equal "PuzzleScript", sample_blob_memory("PuzzleScript/#{name}.txt").language.name
     end
     assert_equal "Text", sample_blob_memory("Text/foo.txt").language.name
