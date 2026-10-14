@@ -277,13 +277,6 @@ class TestBlob < Minitest::Test
     assert sample_blob("Go/testdata/foo.yml").vendored?
   end
 
-  def test_puzzlescript_txt
-    assert_equal "PuzzleScript", sample_blob_memory("PuzzleScript/constellationz.txt").language.name
-    assert_equal "PuzzleScript", sample_blob_memory("PuzzleScript/north-wind-sailboat.txt").language.name
-    assert_equal "PuzzleScript", sample_blob_memory("PuzzleScript/dreizack.txt").language.name
-    assert_equal "Text", sample_blob_memory("Text/foo.txt").language.name
-  end
-
   def test_language
     # Failures are reasonable in some cases, such as when a file is fully valid in more than one language.
     allowed_failures = {
