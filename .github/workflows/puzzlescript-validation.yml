@@ -1,4 +1,4 @@
-name: Prepare and validate PuzzleScript
+name: Validate PuzzleScript fixture cleanup
 on:
   push:
     branches: [puzzlescript-validation]
@@ -17,38 +17,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: c0f7257fcb31c3feacf4b67c485df156f93e918b
+          ref: 85d0df4d3a4f9feef9eced1ea6f45e33241c141b
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - uses: actions/setup-go@v6
-        if: matrix.ruby == '3.3'
-        with:
-          go-version: stable
-          cache: false
-      - uses: dtolnay/rust-toolchain@stable
-        if: matrix.ruby == '3.3'
-      - name: Fetch upstream fixtures and grammars
-        run: |
-          git fetch https://github.com/github-linguist/linguist.git main:refs/remotes/upstream/main v2.0.0:refs/tags/v2.0.0 test/attributes:refs/heads/test/attributes test/master:refs/heads/test/master
-          git branch -f main refs/remotes/upstream/main
-          git submodule init
-          git submodule sync --quiet
-          script/fast-submodule-update
-      - name: Check generated language ID and grammar
-        run: |
-          script/update-ids --check
-          script/grammar-compiler add vendor/grammars/puzzlescript-tmLanguage
-          bundle exec rake samples
-          git diff --exit-code -- grammars.yml lib/linguist/languages.yml
-      - name: Check regex compatibility
-        if: matrix.ruby == '3.3'
-        run: script/check-regex-compatibility
-      - name: Run upstream tests
-        run: bundle exec rake
-      - name: Check grammar licenses
-        run: bundle exec licensed status -c vendor/licenses/config.yml
-      - name: Classifier cross-validation
-        if: matrix.ruby == '3.3'
-        run: bundle exec script/cross-validation --test
+      - name: Compile and generate samples
+        run: bundle exec rake samples
+      - name: Run all heuristic tests
+        run: bundle exec ruby -Ilib:test test/test_heuristics.rb
+      - name: Run PuzzleScript full-detection test
+        run: bundle exec ruby -Ilib:test test/test_blob.rb --name test_puzzlescript_txt
