@@ -6362,6 +6362,7 @@ PuzzleScript:
   - ".txt"
   tm_scope: source.puzzlescript
   ace_mode: text
+  language_id: 616574523
 Pyret:
   type: programming
   color: "#ee1e10"

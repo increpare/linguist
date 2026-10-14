@@ -522,6 +522,7 @@ This is a list of grammars that Linguist selects to provide syntax highlighting 
 - **Pug:** [davidrios/jade-tmbundle](https://github.com/davidrios/jade-tmbundle)
 - **Puppet:** [russCloak/SublimePuppet](https://github.com/russCloak/SublimePuppet)
 - **PureScript:** [purescript-contrib/atom-language-purescript](https://github.com/purescript-contrib/atom-language-purescript)
+- **PuzzleScript:** [increpare/puzzlescript-tmLanguage](https://github.com/increpare/puzzlescript-tmLanguage)
 - **Pyret:** [samuela/language-pyret](https://github.com/samuela/language-pyret)
 - **Python:** [tree-sitter/tree-sitter-python](https://github.com/tree-sitter/tree-sitter-python) 🐌
 - **Python console:** [MagicStack/MagicPython](https://github.com/MagicStack/MagicPython)
