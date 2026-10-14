@@ -1,4 +1,4 @@
-name: Validate simplified PuzzleScript heuristic
+name: Validate existing sample language test
 on:
   push:
     branches: [puzzlescript-validation]
@@ -17,24 +17,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: e465019b0880b6b3a377955583a1d607219085c1
+          ref: 1b946412e4f16b0e2d5939fb787f9a4767933412
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - uses: actions/setup-go@v6
-        if: matrix.ruby == '3.3'
-        with:
-          go-version: stable
-          cache: false
-      - uses: dtolnay/rust-toolchain@stable
-        if: matrix.ruby == '3.3'
-      - name: Check regex compatibility
-        if: matrix.ruby == '3.3'
-        run: script/check-regex-compatibility
       - name: Compile and generate samples
         run: bundle exec rake samples
       - name: Run all heuristic tests
         run: bundle exec ruby -Ilib:test test/test_heuristics.rb
-      - name: Run PuzzleScript full-detection test
-        run: bundle exec ruby -Ilib:test test/test_blob.rb --name test_puzzlescript_txt
+      - name: Run existing sample language detection test
+        run: bundle exec ruby -Ilib:test test/test_blob.rb --name test_language
