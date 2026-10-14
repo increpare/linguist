@@ -1356,6 +1356,8 @@ class TestHeuristics < Minitest::Test
     source = "  objects (sprites)\r\n\tLegend\r\nCollisionLayers (objects)\r\nrules\r\n[ > Player ] -> [ Player ]\r\n"
     candidates = %w[PuzzleScript Text].map { |name| Language[name] }
     assert_equal [Language["PuzzleScript"]], Heuristics.call(Blob.new("game.txt", source), candidates)
+    source = "OBJECTS (a comment\ncontinued here)\nLEGEND\nP = Player\nCOLLISIONLAYERS\nRULES\n"
+    assert_equal [Language["PuzzleScript"]], Heuristics.call(Blob.new("game.txt", source), candidates)
   end
 
   def test_puzzlescript_respects_heuristic_byte_limit
